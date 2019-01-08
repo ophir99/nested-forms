@@ -1,0 +1,69 @@
+<table [formGroup]="personForm">
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td><input type="text" /></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><input type="text" /></td>
+    </tr>
+    <ng-container>
+      <tr>
+        <td>Mother</td>
+        <td><input type="text" /></td>
+        <td>Father</td>
+        <td><input type="text" /></td>
+      </tr>
+    </ng-container>
+    <tr>
+      <td><button (click)="addEduDetailsFormGroup()">+</button></td>
+    </tr>
+    <ng-container formArrayName="eduDetails">
+      <ng-container
+        [formGroupName]="i"
+        *ngFor="let x of personForm.get('eduDetails').controls; let i = index"
+      >
+        <tr>
+          <td>Institute</td>
+          <td><input type="text" /></td>
+          <td>Course</td>
+          <td><input type="text" /></td>
+          <td>Year of PAssing</td>
+          <td><input type="text" /></td>
+        </tr>
+        <tr>
+          <td><button (click)="addSkillsFormControls(i)">+</button></td>
+        </tr>
+        <ng-container formArrayName="skills">
+          <tr
+            *ngFor="
+              let y of personForm.get('eduDetails').controls[i].get('skills')
+                .controls;
+              let i_ = index
+            "
+          >
+            <td>
+              <input type="text" [formControlName]="i_" />
+              <ng-container
+                *ngIf="
+                  personForm.get('eduDetails').controls[i].get('skills')
+                    .controls[i_].invalid
+                "
+              >
+                <p
+                  *ngIf="
+                    personForm.get('eduDetails').controls[i].get('skills')
+                      .controls[i_].errors.maxErr
+                  "
+                >
+                  Not more than 6
+                </p>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </tbody>
+</table>
