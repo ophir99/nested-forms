@@ -7,13 +7,35 @@ import { FormBuilder, FormArray } from "@angular/forms";
 })
 export class FormComponent implements OnInit {
   personForm;
+  data = {
+    name: "Raj",
+    email: "raj@email.com",
+    parents: {
+      mother: "Mother",
+      father: "Father"
+    },
+    eduDetails: [
+      {
+        institute: "OneI",
+        course: "Course1",
+        yop: "10-10-2010",
+        skills: ["Reading", "Playing", "Coding"]
+      },
+      {
+        institute: "OneI",
+        course: "Course1",
+        yop: "10-10-2010",
+        skills: ["Reading", "Playing", "Coding", "Running"]
+      }
+    ]
+  };
   constructor(private formBuilder: FormBuilder) {
     this.personForm = this.formBuilder.group({
-      name: [],
-      email: [],
+      name: [""],
+      email: [""],
       parents: this.formBuilder.group({
-        mother: [],
-        father: []
+        mother: [""],
+        father: [""]
       }),
       eduDetails: this.formBuilder.array([])
     });
@@ -23,9 +45,9 @@ export class FormComponent implements OnInit {
 
   addEduDetailsFormGroup() {
     const formGroup = this.formBuilder.group({
-      institute: [],
-      course: [],
-      yearOfPassing: [],
+      institute: [""],
+      course: [""],
+      yearOfPassing: [""],
       skills: this.formBuilder.array([])
     });
 
@@ -45,5 +67,33 @@ export class FormComponent implements OnInit {
     const fg = (this.personForm.get("eduDetails") as FormArray).controls[i];
 
     (fg.get("skills") as FormArray).push(formControl);
+  }
+
+  showData() {
+    console.log(this.personForm.value);
+  }
+
+  setData() {
+    for (let i = 0; i < this.data.eduDetails.length; i++) {
+      this.personForm.get("eduDetails").push(
+        this.formBuilder.group({
+          institute: [],
+          course: [],
+          yop: [],
+          skills: this.formBuilder.array([])
+        })
+      );
+      for (let j = 0; j < this.data.eduDetails[i].skills.length; j++) {
+        this.personForm
+          .get("eduDetails")
+          .controls[i].get("skills")
+          .push(this.formBuilder.control(""));
+      }
+    }
+    this.personForm.setValue(this.data);
+  }
+
+  removeControl() {
+    this.personForm.removeControl("name");
   }
 }

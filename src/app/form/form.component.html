@@ -1,19 +1,19 @@
 <table [formGroup]="personForm">
   <tbody>
-    <tr>
+    <tr *ngIf="personForm.get('name')">
       <td>Name</td>
-      <td><input type="text" /></td>
+      <td><input type="text" formControlName="name" /></td>
     </tr>
     <tr>
       <td>Email</td>
-      <td><input type="text" /></td>
+      <td><input type="text" formControlName="email" /></td>
     </tr>
-    <ng-container>
+    <ng-container formGroupName="parents">
       <tr>
         <td>Mother</td>
-        <td><input type="text" /></td>
+        <td><input type="text" formControlName="mother" /></td>
         <td>Father</td>
-        <td><input type="text" /></td>
+        <td><input type="text" formControlName="father" /></td>
       </tr>
     </ng-container>
     <tr>
@@ -26,11 +26,11 @@
       >
         <tr>
           <td>Institute</td>
-          <td><input type="text" /></td>
+          <td><input type="text" formControlName="institute" /></td>
           <td>Course</td>
-          <td><input type="text" /></td>
+          <td><input type="text" formControlName="course" /></td>
           <td>Year of PAssing</td>
-          <td><input type="text" /></td>
+          <td><input type="text" formControlName="yop" /></td>
         </tr>
         <tr>
           <td><button (click)="addSkillsFormControls(i)">+</button></td>
@@ -43,6 +43,7 @@
               let i_ = index
             "
           >
+            <td></td>
             <td>
               <input type="text" [formControlName]="i_" />
               <ng-container
@@ -65,5 +66,15 @@
         </ng-container>
       </ng-container>
     </ng-container>
+    <tr>
+      <td></td>
+      <td><button (click)="showData()">Submit</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button (click)="setData()">Set Data</button></td>
+    </tr>
   </tbody>
 </table>
+
+<button (click)="removeControl()">Remove</button>
